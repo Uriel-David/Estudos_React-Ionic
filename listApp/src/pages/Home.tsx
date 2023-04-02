@@ -1,21 +1,37 @@
-import { IonAvatar, IonContent, IonHeader, IonImg, IonItem, IonLabel, IonList, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import { Fragment } from 'react';
+import { IonAvatar, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonImg, IonItem, IonLabel, IonList, IonPage, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
+import { personCircleOutline } from 'ionicons/icons'; 
+import { Fragment, useEffect, useState } from 'react';
 import { useData } from '../hooks/useData';
 import './Home.css';
 
 const Home: React.FC = () => {
   const { data } = useData();
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [filterSearch, setFilterSearch] = useState<any[]>(data);
+
+  useEffect(() => {
+    let dataFiltered = searchQuery.length === 0 ? data : data.filter((user) => !user.email.indexOf(searchQuery));
+    setFilterSearch(dataFiltered);
+  }, [searchQuery])
   
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color='primary'>
           <IonTitle>Home</IonTitle>
+          <IonButtons slot='end'>
+            <IonButton>
+              <IonIcon icon={personCircleOutline} slot='icon-only'></IonIcon>
+            </IonButton>
+          </IonButtons>
+        </IonToolbar>
+        <IonToolbar color='primary'>
+          <IonSearchbar onIonInput={event => setSearchQuery(event.detail.value!)} value={searchQuery}></IonSearchbar>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonList>
-          { data.map((item: any, index) => {
+          { filterSearch.map((item: any, index) => {
             return (
               <Fragment key={index}>
                 <IonItem routerLink={ `home/details/${item.email}` }>
