@@ -8,7 +8,7 @@ import './Details.css';
 const Details: React.FC<UserDetailPageProps> = ({ match }) => {
   const { getUserByEmail } = useData();
   const [user, setUser] = useState<any>(null);
-  const [image, setImage] = useState<string>('');
+  const [image, setImage] = useState<string|undefined>(undefined);
   const ionCardRef = useRef(null as any);
 
   const getUser = async () => {
@@ -17,11 +17,13 @@ const Details: React.FC<UserDetailPageProps> = ({ match }) => {
   }
 
   const captureImage = async () => {
+    console.log("TEST");
     const photo = await Camera.getPhoto({
       resultType: CameraResultType.Base64,
       source: CameraSource.Prompt,
       quality: 100,
     });
+    console.log("PHOTO: ", photo);
 
     const image = `data:image/jpeg;base64,${photo.base64String}`;
     setImage(image);
@@ -60,7 +62,7 @@ const Details: React.FC<UserDetailPageProps> = ({ match }) => {
           </IonCardHeader>
         </IonCard>
         <IonButton onClick={() => captureImage}>Capture Image</IonButton>
-        <img src={image} alt='Captured image' />
+        <img src={image} />
       </IonContent>
     </IonPage>
   );
