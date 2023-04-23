@@ -17,13 +17,11 @@ const Details: React.FC<UserDetailPageProps> = ({ match }) => {
   }
 
   const captureImage = async () => {
-    console.log("TEST");
     const photo = await Camera.getPhoto({
       resultType: CameraResultType.Base64,
       source: CameraSource.Prompt,
       quality: 100,
     });
-    console.log("PHOTO: ", photo);
 
     const image = `data:image/jpeg;base64,${photo.base64String}`;
     setImage(image);
@@ -61,7 +59,7 @@ const Details: React.FC<UserDetailPageProps> = ({ match }) => {
             </IonCardContent>
           </IonCardHeader>
         </IonCard>
-        <IonButton onClick={() => captureImage}>Capture Image</IonButton>
+        <IonButton onClick={captureImage}>Capture Image</IonButton>
         <img src={image} />
       </IonContent>
     </IonPage>

@@ -10,10 +10,16 @@ const Home: React.FC = () => {
   const [filterSearch, setFilterSearch] = useState<any[]>(data);
 
   useEffect(() => {
-    let dataFiltered = searchQuery.length === 0 ? data : data.filter((user) => !user.email.indexOf(searchQuery));
+    console.log("[]");
+    setFilterSearch(data);
+  }, []);
+
+  useEffect(() => {
+    console.log("[searchQuery, data]");
+    const dataFiltered = data.filter((user) => !user.email.indexOf(searchQuery));
     setFilterSearch(dataFiltered);
-  }, [searchQuery])
-  
+  }, [searchQuery, data]);
+
   return (
     <IonPage>
       <IonHeader>
@@ -31,7 +37,7 @@ const Home: React.FC = () => {
       </IonHeader>
       <IonContent fullscreen>
         <IonList>
-          { filterSearch.map((item: any, index) => {
+          {filterSearch.map((item: any, index: number) => {
             return (
               <Fragment key={index}>
                 <IonItem routerLink={ `home/details/${item.email}` }>
